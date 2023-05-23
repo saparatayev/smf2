@@ -1,0 +1,7 @@
+<h1>All tracks:</h1>
+
+<ul>
+    {% for track in tracks %}
+        <li>{{ track.title }} - {{ track.singer }}</li>
+    {% endfor %}
+</ul>
