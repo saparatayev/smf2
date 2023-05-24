@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>All tracks:</h1>
-
+    {{ dump() }}
     <ul>
         {% for track in tracks %}
             <li>{{ track.title }} - {{ track.singer|upper }}</li>
