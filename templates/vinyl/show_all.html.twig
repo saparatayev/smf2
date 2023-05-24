@@ -2,6 +2,6 @@
 
 <ul>
     {% for track in tracks %}
-        <li>{{ track.title }} - {{ track.singer }}</li>
+        <li>{{ track.title }} - {{ track.singer|upper }}</li>
     {% endfor %}
 </ul>
