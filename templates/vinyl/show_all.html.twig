@@ -11,4 +11,9 @@
         {% endfor %}
     </ul>
 
+    <a href="{{ path('browse', {slug: 'hey-you'}) }}">hey-you</a>
+    <a href="{{ path('browse', {slug: 'water-melon'}) }}">water-melon</a>
+    <a href="{{ path('browse', {slug: 'ice-cream'}) }}">ice-cream</a>
+    <a href="{{ path('browse') }}">nothing</a>
+
 {% endblock %}

@@ -9,21 +9,25 @@ use function Symfony\Component\String\u;
 
 class VinylController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/', name: 'home')]
     public function homepage(): Response
     {
-        return new Response('Title: Iron & B');
+        return $this->render('vinyl/home.html.twig', [
+            'title' => 'Home'
+        ]);
     }
 
-    #[Route('/browse/{slug?}')]
+    #[Route('/browse/{slug?}', name: 'browse')]
     public function browse($slug): Response
     {
         $title = u(str_replace('-', ' ', $slug))->title(true);
 
-        return new Response('Title: ' . ($title ?? 'no title'));
+        return $this->render('vinyl/browse.html.twig', [
+            'title' => $title
+        ]);
     }
 
-    #[Route('/show-all')]
+    #[Route('/show-all', name: 'show_all')]
     public function showAll(): Response
     {
         $tracks = [
