@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
+
 use function Symfony\Component\String\u;
 
 class VinylController extends AbstractController
@@ -18,13 +20,15 @@ class VinylController extends AbstractController
     }
 
     #[Route('/browse/{slug?}', name: 'browse')]
-    public function browse($slug): Response
+    public function browse($slug, Environment $twig): Response
     {
         $title = u(str_replace('-', ' ', $slug))->title(true);
 
-        return $this->render('vinyl/browse.html.twig', [
+        $html = $twig->render('vinyl/browse.html.twig', [
             'title' => $title
         ]);
+
+        return new Response($html);
     }
 
     #[Route('/show-all', name: 'show_all')]
