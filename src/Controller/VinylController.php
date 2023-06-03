@@ -21,14 +21,14 @@ class VinylController extends AbstractController
     }
 
     #[Route('/browse/{slug?}', name: 'browse')]
-    public function browse(DateTimeFormatter $timeFormatter, $slug, Environment $twig): Response
+    public function browse($slug, Environment $twig): Response
     {
         $title = u(str_replace('-', ' ', $slug))->title(true);
         $mixes = $this->getMixes();
 
-        foreach ($mixes as $key => $mix) {
-            $mixes[$key]['ago'] = $timeFormatter->formatDiff($mix['createdAt']);
-        }
+        // foreach ($mixes as $key => $mix) {
+        //     $mixes[$key]['ago'] = $timeFormatter->formatDiff($mix['createdAt']);
+        // }
 
         $html = $twig->render('vinyl/browse.html.twig', [
             'title' => $title,
