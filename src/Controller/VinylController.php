@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use Knp\Bundle\TimeBundle\DateTimeFormatter;
+use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -22,13 +24,16 @@ class VinylController extends AbstractController
     }
 
     #[Route('/browse/{slug?}', name: 'browse')]
-    public function browse(HttpClientInterface $httpClient, $slug, Environment $twig): Response
+    public function browse(HttpClientInterface $httpClient, CacheInterface $cache, $slug, Environment $twig): Response
     {
         $title = u(str_replace('-', ' ', $slug))->title(true);
 
-        $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json');
-        $mixes = $response->toArray();
-
+        $mixes = $cache->get('mixes_data', function(CacheItemInterface $cacheItem) use ($httpClient) {
+            $cacheItem->expiresAfter(5);
+            $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json');
+            return $response->toArray();
+        });
+        
         $html = $twig->render('vinyl/browse.html.twig', [
             'title' => $title,
             'mixes' => $mixes
