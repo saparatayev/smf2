@@ -26,6 +26,7 @@ class VinylController extends AbstractController
     #[Route('/browse/{slug?}', name: 'browse')]
     public function browse(HttpClientInterface $httpClient, CacheInterface $cache, $slug, Environment $twig): Response
     {
+        dump($cache);
         $title = u(str_replace('-', ' ', $slug))->title(true);
 
         $mixes = $cache->get('mixes_data', function(CacheItemInterface $cacheItem) use ($httpClient) {
